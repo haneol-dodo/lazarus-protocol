@@ -1,0 +1,22 @@
+#!/bin/sh
+# ${DOMAIN_NAME} — Pre-commit audit hook
+# Generated from Lazarus template
+# Install: cp this-file .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+STAGED=$(git diff --cached --name-only)
+
+# Only run audit if relevant files are staged
+if echo "$STAGED" | grep -q "^enums/" || echo "$STAGED" | grep -q "^data/"; then
+    echo "Running ${DOMAIN_NAME} audit on staged changes..."
+    python -m ${AUDIT_MODULE} --staged
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+        echo ""
+        echo "[STOP] Audit failed. Commit blocked."
+        echo "Fix violations and try again."
+        exit 1
+    fi
+    echo "Audit passed."
+fi
+
+exit 0

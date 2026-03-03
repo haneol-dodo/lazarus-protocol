@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""${DOMAIN_NAME} — Categorical Convergence Runner.
+
+Adapted from Lazarus convergence protocol for ${domain_name} domain.
+
+Usage:
+  python convergence_runner.py prompt ${example_facet_id}
+  python convergence_runner.py add-run ${example_facet_id} --run-id claude_haiku_1 --family claude --values-file run1.json
+  python convergence_runner.py analyze ${example_facet_id}
+  python convergence_runner.py report ${example_facet_id}
+  python convergence_runner.py remaining ${example_facet_id}
+  python convergence_runner.py pilot-check ${example_facet_id}
+  python convergence_runner.py export ${example_facet_id}
+  python convergence_runner.py list-facets
+"""
+
+import json
+import sys
+import argparse
+from pathlib import Path
+
+from lazarus.convergence.categorical import CategoricalConvergence
+from lazarus.convergence.display import (
+    print_categorical_analysis,
+    print_categorical_remaining,
+    print_categorical_report,
+)
+from lazarus.prompt.template import PromptTemplate
+from lazarus.data.io import load_json, save_json, parse_csv_output
+
+# Import your domain registry
+# from ${domain_module}.config import registry
+
+# --- Facet Registry ---
+# Maps facet_id to its enum values and description.
+# Add new facets here as they become convergence targets.
+
+FACET_REGISTRY = {
+    # "${example_facet_id}": {
+    #     "enum_values": ["value_a", "value_b", "value_c"],
+    #     "description": "Description of what this facet measures",
+    #     "ordered": True,
+    #     "ubl_prompt": (
+    #         "Usage-based framing for this facet.\n"
+    #         "  value_a = explanation\n"
+    #         "  value_b = explanation\n"
+    #         "  value_c = explanation"
+    #     ),
+    # },
+}
+
+# --- Engine ---
+convergence = CategoricalConvergence()
+prompt_template = PromptTemplate(entity_noun="word", value_noun="value")
+
+
+# --- Data I/O ---
+def data_path(facet_id: str) -> Path:
+    return Path(f"data/convergence_{facet_id.replace('.', '_')}.json")
+
+
+def load_facet_data(facet_id: str) -> dict:
+    path = data_path(facet_id)
+    if path.exists():
+        return load_json(path)
+    if facet_id not in FACET_REGISTRY:
+        print(f"ERROR: Unknown facet '{facet_id}'. Known facets:")
+        for k in sorted(FACET_REGISTRY):
+            print(f"  {k}")
+        sys.exit(1)
+    reg = FACET_REGISTRY[facet_id]
+    return convergence.init_axis_data(
+        facet_id, reg["enum_values"], reg["description"], reg.get("ordered", False),
+    )
+
+
+def save_facet_data(facet_id: str, data: dict):
+    save_json(data_path(facet_id), data)
+    print(f"Saved: {data_path(facet_id)}")
+
+
+# --- CLI ---
+def main():
+    parser = argparse.ArgumentParser(description="${DOMAIN_NAME} Convergence Runner")
+    subparsers = parser.add_subparsers(dest="command")
+
+    p_prompt = subparsers.add_parser("prompt")
+    p_prompt.add_argument("facet_id")
+    p_prompt.add_argument("--entities-file", help="File with one entity per line")
+
+    p_add = subparsers.add_parser("add-run")
+    p_add.add_argument("facet_id")
+    p_add.add_argument("--run-id", required=True)
+    p_add.add_argument("--family", required=True)
+    p_add.add_argument("--round", type=int, default=1)
+    p_add.add_argument("--values-file", required=True)
+
+    p_analyze = subparsers.add_parser("analyze")
+    p_analyze.add_argument("facet_id")
+
+    p_report = subparsers.add_parser("report")
+    p_report.add_argument("facet_id")
+
+    p_remain = subparsers.add_parser("remaining")
+    p_remain.add_argument("facet_id")
+
+    p_pilot = subparsers.add_parser("pilot-check")
+    p_pilot.add_argument("facet_id")
+
+    p_export = subparsers.add_parser("export")
+    p_export.add_argument("facet_id")
+    p_export.add_argument("--output")
+
+    subparsers.add_parser("list-facets")
+
+    args = parser.parse_args()
+    if args.command is None:
+        parser.print_help()
+        return
+
+    if args.command == "list-facets":
+        for fid, reg in sorted(FACET_REGISTRY.items()):
+            print(f"  {fid:<35s} {reg['description']}")
+        return
+
+    if args.command == "prompt":
+        reg = FACET_REGISTRY.get(args.facet_id)
+        if not reg:
+            print(f"ERROR: Unknown facet '{args.facet_id}'")
+            sys.exit(1)
+        entities = None
+        if args.entities_file:
+            with open(args.entities_file) as f:
+                entities = [line.strip() for line in f if line.strip()]
+        if entities is None:
+            print("ERROR: provide --entities-file")
+            sys.exit(1)
+        print(prompt_template.generate(
+            reg["description"], reg["ubl_prompt"], reg["enum_values"], entities,
+        ))
+        return
+
+    if args.command == "add-run":
+        data = load_facet_data(args.facet_id)
+        vf = Path(args.values_file)
+        if vf.suffix == ".json":
+            values = load_json(vf)
+        else:
+            with open(vf) as f:
+                values = parse_csv_output(f.read())
+        count = convergence.add_run(data, args.run_id, args.family, args.round, values)
+        save_facet_data(args.facet_id, data)
+        print(f"Added {args.run_id}: {count} entities")
+        analysis = convergence.analyze_axis(data)
+        print(f"Convergence: {analysis.converged_count}/{analysis.total_words} ({analysis.converged_pct}%)")
+        return
+
+    if args.command == "analyze":
+        data = load_facet_data(args.facet_id)
+        analysis = convergence.analyze_axis(data)
+        print_categorical_analysis(analysis)
+        return
+
+    if args.command == "report":
+        data = load_facet_data(args.facet_id)
+        analysis = convergence.analyze_axis(data)
+        print_categorical_report(analysis)
+        return
+
+    if args.command == "remaining":
+        data = load_facet_data(args.facet_id)
+        analysis = convergence.analyze_axis(data)
+        print_categorical_remaining(analysis)
+        return
+
+    if args.command == "pilot-check":
+        data = load_facet_data(args.facet_id)
+        result = convergence.pilot_check(data)
+        print(f"Viable: {result.viable}")
+        print(f"Mean agreement: {result.mean_agreement}%")
+        print(f"Recommendation: {result.recommendation}")
+        return
+
+    if args.command == "export":
+        data = load_facet_data(args.facet_id)
+        result = convergence.export_converged(data)
+        if args.output:
+            save_json(args.output, result)
+            print(f"Exported {len(result)} converged values")
+        else:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+        return
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "${domain_name}_enum_meta_schema",
+  "title": "${DOMAIN_NAME} Enum Meta-Schema",
+  "description": "Schema for validating ${domain_name} enum files",
+  "type": "object",
+  "required": ["gap_id", "gap_name", "coordinate", "axes"],
+  "properties": {
+    "gap_id": {
+      "type": "string",
+      "description": "Unique identifier for the gap"
+    },
+    "gap_name": {
+      "type": "string",
+      "description": "Human-readable name"
+    },
+    "coordinate": {
+      "type": "string",
+      "enum": [
+        "REPLACE_WITH_YOUR_COORDINATE_SYSTEMS"
+      ],
+      "description": "Which coordinate system this gap belongs to"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "published"],
+      "description": "Publication status"
+    },
+    "axes": {
+      "type": "object",
+      "description": "Axis definitions",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type", "description"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["enum", "enum[]", "numeric", "string", "boolean"]
+          },
+          "description": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

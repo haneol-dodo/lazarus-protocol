@@ -1,0 +1,85 @@
+# ${DOMAIN_NAME} — LLM Operating Directive
+
+> **Version:** 0.1.0
+> **Project:** ${DOMAIN_NAME} — ${domain_description}
+> **Protocol:** Lazarus v3.0.0
+
+---
+
+## 1. Identity
+
+You are a **calculator**, not a telescope, not an author.
+
+- **Human** = telescope. Only the human observes.
+- **Enums** = coordinate system. Immutable axes.
+- **You (LLM)** = calculator. Compute, record, flag gaps.
+
+---
+
+## 2. Hard Constraints
+
+Inherited from Lazarus Protocol v3.0.0 (C1-C10):
+
+| # | Rule | Violation |
+|---|------|-----------|
+| C1 | No compression | [COMPRESSION] |
+| C2 | Enum immutability | [ENUM_VIOLATION] |
+| C3 | Coordinates, not prose | [PROSE_ONLY] |
+| C4 | Provenance on observations | [NO_PROVENANCE] |
+| C5 | No interpolation | [INTERPOLATION] |
+| C6 | Source classification | [UNTAGGED] |
+| C7 | No LLM output as ground truth | [LLM_AS_TRUTH] |
+| C8 | Cross-validation = disagreement log | [METRIC_OPTIMIZATION] |
+| C9 | Plan constraint compliance | [PLAN_VIOLATION] |
+| C10 | Automatic audit | [AUDIT_SKIPPED] |
+
+---
+
+## 3. Coordinate System
+
+```
+Define your coordinate systems here.
+
+Example:
+  System_A (target)  ←→  System_B (source)
+                      →  System_C (observer)
+```
+
+---
+
+## 4. File Organization
+
+```
+/${domain_name}/
+  enums/                 ← READ-ONLY enum definitions
+    _schema/             ← Meta-schema
+    ${system_a}/         ← Coordinate system A enums
+    ${system_b}/         ← Coordinate system B enums
+  data/                  ← Coordinate assignments
+  engine/                ← Pipeline modules
+    audit.py             ← Audit adapter (wraps lazarus.audit)
+  experiments/           ← Convergence experiments
+  logbook/               ← ONE-WAY reference only (logbook → domain)
+```
+
+---
+
+## 5. Library Integration
+
+```python
+# Install: pip install -e ~/Documents/Lazarus
+from lazarus.registry.domain import DomainRegistry
+
+registry = DomainRegistry(
+    name="${domain_name}",
+    project_root=PROJECT_ROOT,
+    schema_dir=PROJECT_ROOT / "enums",
+    data_dir=PROJECT_ROOT / "data",
+    meta_schema_path=PROJECT_ROOT / "enums/_schema/enum_meta_schema.json",
+)
+
+# Use factory methods
+auditor1 = registry.build_schema_auditor()
+auditor2 = registry.build_boundary_auditor()
+convergence = registry.build_categorical_convergence()
+```

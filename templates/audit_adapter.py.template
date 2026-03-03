@@ -1,0 +1,64 @@
+"""${DOMAIN_NAME} — Audit Adapter.
+
+Thin adapter over Lazarus audit framework.
+Provides CLI: python -m ${domain_module}.audit --staged | --file | --full
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+from lazarus.audit.core import AuditReport
+
+# Import your domain registry
+# from ${domain_module}.config import registry
+
+
+def audit_staged() -> AuditReport:
+    """Run both auditors on staged git changes."""
+    return registry.audit_staged()
+
+
+def audit_full() -> AuditReport:
+    """Run both auditors on the full system."""
+    return registry.audit_full()
+
+
+def audit_file(file_path: Path) -> AuditReport:
+    """Audit a single file (routes to appropriate auditor)."""
+    report = AuditReport()
+    schema_dir = str(registry.schema_dir)
+    if str(file_path).startswith(schema_dir) or "/enums/" in str(file_path):
+        registry.build_schema_auditor().audit_file(file_path, report)
+    else:
+        registry.build_boundary_auditor().audit_file(file_path, report)
+    return report
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="${DOMAIN_NAME} Dual Automatic Audit (C10)"
+    )
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--staged", action="store_true")
+    mode.add_argument("--file", type=str)
+    mode.add_argument("--full", action="store_true")
+    args = parser.parse_args()
+
+    if args.staged:
+        report = audit_staged()
+    elif args.file:
+        path = Path(args.file)
+        if not path.exists():
+            print(f"File not found: {path}", file=sys.stderr)
+            sys.exit(1)
+        report = audit_file(path)
+    elif args.full:
+        report = audit_full()
+
+    print(report.summary("${DOMAIN_NAME} AUDIT REPORT"))
+    sys.exit(0 if report.passed else 1)
+
+
+if __name__ == "__main__":
+    main()

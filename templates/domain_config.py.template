@@ -1,0 +1,40 @@
+"""${DOMAIN_NAME} — Domain Registry Configuration.
+
+Central configuration for the ${DOMAIN_NAME} Lazarus domain instance.
+Customize paths, thresholds, and families for your project.
+"""
+
+from pathlib import Path
+from lazarus.registry.domain import DomainRegistry
+
+PROJECT_ROOT = Path(__file__).parent.parent
+
+# --- Domain Registry ---
+# Adjust all paths and thresholds to match your project structure.
+
+registry = DomainRegistry(
+    name="${domain_name}",
+    project_root=PROJECT_ROOT,
+    schema_dir=PROJECT_ROOT / "enums",
+    data_dir=PROJECT_ROOT / "data",
+    meta_schema_path=PROJECT_ROOT / "enums" / "_schema" / "enum_meta_schema.json",
+    pipeline_dir="engine/",
+    coordinate_dirs=[
+        # List your coordinate system directory names here.
+        # These are subdirectories of schema_dir containing gap*.json files.
+        # Example: "A_language", "B_learner"
+    ],
+    coordinate_subdir=None,  # Subdirectory of data_dir for coordinate files
+    valid_pipeline_prefix="engine.",
+    families=["claude", "openai", "google"],
+    models=["haiku", "sonnet", "opus"],
+    # Convergence thresholds
+    min_agreement=0.70,
+    min_stable_rounds=2,
+    runs_per_round=6,
+    max_rounds=3,
+    # Audit thresholds
+    min_convergence_runs=18,
+    min_convergence_families=2,
+    min_convergence_agreement=70,
+)
