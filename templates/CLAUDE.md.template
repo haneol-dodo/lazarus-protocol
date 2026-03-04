@@ -1,7 +1,7 @@
-# ${DOMAIN_NAME} — LLM Operating Directive
+# ${DOMAIN_NAME} -- LLM Operating Directive
 
 > **Version:** 0.1.0
-> **Project:** ${DOMAIN_NAME} — ${domain_description}
+> **Project:** ${DOMAIN_NAME} -- ${domain_description}
 > **Protocol:** Lazarus v3.0.0
 
 ---
