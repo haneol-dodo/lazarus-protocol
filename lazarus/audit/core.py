@@ -28,15 +28,28 @@ class AuditReport:
     checked_files: list[str] = field(default_factory=list)
     auditor1_pass: bool = True
     auditor2_pass: bool = True
+    auditor3_pass: bool = True
 
     @property
     def passed(self) -> bool:
         return self.auditor1_pass and self.auditor2_pass
 
+    @property
+    def all_passed(self) -> bool:
+        """Check all auditors including non-blocking Auditor 3."""
+        return self.auditor1_pass and self.auditor2_pass and self.auditor3_pass
+
+    @property
+    def warnings(self) -> list[Violation]:
+        """Return minor (non-blocking) violations."""
+        return [v for v in self.violations if v.severity == "minor"]
+
     def add(self, v: Violation):
         self.violations.append(v)
         if v.auditor == "coordinate_integrity":
             self.auditor1_pass = False
+        elif v.auditor == "logbook_experiment":
+            self.auditor3_pass = False
         else:
             self.auditor2_pass = False
 
@@ -47,8 +60,10 @@ class AuditReport:
         lines.append("=" * 50)
         a1_tag = "PASS" if self.auditor1_pass else "FAIL"
         a2_tag = "PASS" if self.auditor2_pass else "FAIL"
+        a3_tag = "PASS" if self.auditor3_pass else "WARN"
         lines.append(f"Auditor 1 (Schema Integrity):     {a1_tag}")
         lines.append(f"Auditor 2 (Calculator Boundary):  {a2_tag}")
+        lines.append(f"Auditor 3 (Logbook/Experiment):   {a3_tag}")
         lines.append(f"Files checked: {len(self.checked_files)}")
         lines.append(f"Violations: {len(self.violations)}")
 

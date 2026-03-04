@@ -1,0 +1,42 @@
+# EXP-{ID}: {TITLE}
+
+> **Status:** design
+> **Branch:** exp-{ID}-{SLUG}
+> **Created:** {DATE}
+> **Predecessor:** {PREDECESSOR}
+
+---
+
+## Objective
+
+[What question does this experiment answer?]
+
+## Protocol
+
+[Step-by-step procedure. Include:]
+- [ ] Data source and sample size
+- [ ] Number of runs / convergence criteria
+- [ ] Models / families to use
+- [ ] Success/failure criteria
+
+## Status
+
+- [ ] Design complete
+- [ ] Pilot run
+- [ ] Full run
+- [ ] Analysis
+- [ ] Merged / Abandoned
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `experiments/{ID}_*.md` | This document |
+
+## Results
+
+[Filled after analysis phase]
+
+## Conclusion
+
+[Filled after analysis phase]

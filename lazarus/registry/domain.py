@@ -10,6 +10,7 @@ from pathlib import Path
 from ..audit.core import AuditReport
 from ..audit.schema_auditor import SchemaIntegrityAuditor
 from ..audit.boundary_auditor import CalculatorBoundaryAuditor
+from ..audit.logbook_auditor import LogbookExperimentAuditor
 from ..convergence.categorical import CategoricalConvergence
 from ..convergence.numeric import NumericConvergence
 
@@ -47,6 +48,12 @@ class DomainRegistry:
         min_convergence_runs: int = 18,
         min_convergence_families: int = 2,
         min_convergence_agreement: float = 70,
+        # Logbook/experiment config
+        logbook_dir: str = "logbook",
+        experiment_dir: str = "experiments",
+        logbook_index: str = "INDEX.md",
+        enforce_logbook: bool = True,
+        enforce_experiment: bool = True,
     ):
         self.name = name
         self.project_root = Path(project_root)
@@ -77,6 +84,13 @@ class DomainRegistry:
         self.min_convergence_families = min_convergence_families
         self.min_convergence_agreement = min_convergence_agreement
 
+        # Logbook/experiment config
+        self.logbook_dir = logbook_dir
+        self.experiment_dir = experiment_dir
+        self.logbook_index = logbook_index
+        self.enforce_logbook = enforce_logbook
+        self.enforce_experiment = enforce_experiment
+
     def build_schema_auditor(self) -> SchemaIntegrityAuditor:
         """Build Auditor 1 configured for this domain."""
         return SchemaIntegrityAuditor(
@@ -97,6 +111,17 @@ class DomainRegistry:
             min_convergence_runs=self.min_convergence_runs,
             min_convergence_families=self.min_convergence_families,
             min_convergence_agreement=self.min_convergence_agreement,
+        )
+
+    def build_logbook_auditor(self) -> LogbookExperimentAuditor:
+        """Build Auditor 3 configured for this domain."""
+        return LogbookExperimentAuditor(
+            project_root=self.project_root,
+            logbook_dir=self.logbook_dir,
+            experiment_dir=self.experiment_dir,
+            logbook_index=self.logbook_index,
+            enforce_logbook=self.enforce_logbook,
+            enforce_experiment=self.enforce_experiment,
         )
 
     def build_categorical_convergence(self) -> CategoricalConvergence:
@@ -121,15 +146,19 @@ class DomainRegistry:
         )
 
     def audit_staged(self) -> AuditReport:
-        """Run both auditors on staged git changes."""
+        """Run all auditors on staged git changes."""
         report = AuditReport()
         self.build_schema_auditor().audit_staged(report)
         self.build_boundary_auditor().audit_staged(report)
+        if self.enforce_logbook or self.enforce_experiment:
+            self.build_logbook_auditor().audit_staged(report)
         return report
 
     def audit_full(self) -> AuditReport:
-        """Run both auditors on the full system."""
+        """Run all auditors on the full system."""
         report = AuditReport()
         self.build_schema_auditor().audit_full(report)
         self.build_boundary_auditor().audit_full(report)
+        if self.enforce_logbook or self.enforce_experiment:
+            self.build_logbook_auditor().audit_full(report)
         return report

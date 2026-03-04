@@ -8,19 +8,47 @@ as a git pre-commit hook.
 def generate_pre_commit_script(
     audit_module: str = "engine.audit",
     trigger_dirs: list[str] | None = None,
+    logbook_dir: str = "logbook",
+    experiment_dir: str = "experiments",
+    logbook_warning: bool = True,
 ) -> str:
     """Generate a pre-commit hook shell script.
 
     Args:
         audit_module: Python module to run (e.g. 'engine.audit')
         trigger_dirs: directories that trigger the audit (e.g. ['enums/', 'data/'])
+        logbook_dir: directory containing logbook entries
+        experiment_dir: directory containing experiment docs
+        logbook_warning: if True, add a non-blocking logbook check
     """
     if trigger_dirs is None:
         trigger_dirs = ["enums/", "data/"]
 
+    # Always include logbook and experiment dirs as triggers for Auditor 3
+    all_trigger_dirs = list(trigger_dirs)
+    for d in [logbook_dir + "/", experiment_dir + "/", "engine/", "experiments/"]:
+        if d not in all_trigger_dirs:
+            all_trigger_dirs.append(d)
+
     dir_checks = " || ".join(
-        f'echo "$STAGED" | grep -q "^{d}"' for d in trigger_dirs
+        f'echo "$STAGED" | grep -q "^{d}"' for d in all_trigger_dirs
     )
+
+    logbook_check = ""
+    if logbook_warning:
+        logbook_check = f"""
+# Logbook documentation check (non-blocking warning)
+MEANINGFUL=$(echo "$STAGED" | grep -E '^(enums/|engine/|experiments/|_schema/|references/|hooks/)')
+HAS_LOGBOOK=$(echo "$STAGED" | grep -q '^{logbook_dir}/' && echo "yes" || echo "no")
+if [ -n "$MEANINGFUL" ] && [ "$HAS_LOGBOOK" = "no" ]; then
+    echo ""
+    echo "[WARNING] Meaningful changes detected without a logbook entry."
+    echo "  Consider adding a logbook entry for this commit."
+    echo "  Staged meaningful files:"
+    echo "$MEANINGFUL" | head -5 | sed 's/^/    /'
+    echo ""
+fi
+"""
 
     return f"""#!/bin/sh
 # Lazarus Protocol — Pre-commit audit hook
@@ -42,6 +70,6 @@ if {dir_checks}; then
     fi
     echo "Audit passed."
 fi
-
+{logbook_check}
 exit 0
 """

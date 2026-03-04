@@ -1,0 +1,15 @@
+# {NUMBER} — {TITLE}
+
+> **Date:** {DATE}
+> **Build:** {BUILD}
+> **Trigger:** {TRIGGER}
+> **Lens:** {LENS}
+> **Voice:** {VOICE}
+
+---
+
+{CONTENT}
+
+[TODO: Describe what changed, why it matters, what it connects to.
+If the change reveals a tension or open question, state it explicitly.
+If it connects to a previous logbook entry, reference it.]
