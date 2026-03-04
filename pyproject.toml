@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lazarus-protocol"
-version = "0.1.0"
+version = "0.2.0"
 description = "Meta-research protocol library: probe-based exploration of unknown coordinate spaces"
 readme = "README.md"
 requires-python = ">=3.11"

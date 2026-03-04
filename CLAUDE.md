@@ -3,7 +3,7 @@
 > **Version:** 3.0.0 | **Updated:** 2026-03-04
 > **Protocol:** Lazarus -- Probe-based exploration of unknown coordinate spaces
 > **Origin:** KPI-based probes (failed, all Mann) → Lazarus (OKR-based, Mann prevention)
-> **Library:** `lazarus-protocol` v0.1.0 (Python, stdlib only)
+> **Library:** `lazarus-protocol` v0.2.0 (Python, stdlib only)
 
 ---
 
