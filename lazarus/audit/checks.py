@@ -469,12 +469,19 @@ def detect_pipeline_manipulation_staged(
         return
 
     # C7 Check 1: Word-level override sets
+    # Matches standalone sets like: OVERRIDE = {"word1", "word2", ...}
+    # Skips dict-value sets like: "verb": {"up", "in", "out", ...}
+    # (dict values are typically linguistic reference data, not POC fitting)
     set_pattern = re.compile(
         r'^\+.*(?:set\(|{)\s*"[a-z]+"(?:\s*,\s*"[a-z]+")+\s*[})]',
         re.MULTILINE,
     )
+    dict_value_pattern = re.compile(r'"[a-z_]+"\s*:\s*(?:set\(|{)')
     matches = set_pattern.findall(diff_text)
     for match in matches:
+        # Skip dict-value sets (key: {values}) — these are reference data
+        if dict_value_pattern.search(match):
+            continue
         word_count = match.count('"') // 2
         if word_count >= 5:
             report.add(Violation(
