@@ -1,9 +1,10 @@
 # Lazarus Protocol -- Meta-Research Operating Directive
 
-> **Version:** 3.0.0 | **Updated:** 2026-03-04
+> **Version:** 3.1.0 | **Updated:** 2026-03-08
 > **Protocol:** Lazarus -- Probe-based exploration of unknown coordinate spaces
 > **Origin:** KPI-based probes (failed, all Mann) → Lazarus (OKR-based, Mann prevention)
 > **Library:** `lazarus-protocol` v0.2.0 (Python, stdlib only)
+> **Cosmology:** Tesseract(discovery) → Lazarus(collection) → Parallax(triangulation)
 
 ---
 
@@ -14,6 +15,44 @@
 - **LLM** = calculator. Operates within enum coordinates. Computes, records, flags gaps.
 - **Probe** = sub-agent. Sent to extract data from a source. Reports back. Does NOT evaluate.
   - Probe = shepherd walking the coastline. Follows the grass. Records what it sees. Does not decide where to go in advance.
+
+### Cosmology
+
+```
+Tesseract (discovery)  →  Lazarus (collection)  →  Parallax (triangulation)
+  "무엇을 볼 것인가"       "어떻게 모을 것인가"       "어떻게 삼각측량할 것인가"
+  (domain-agnostic          (domain-agnostic          (domain-specific
+   framework)                meta-protocol)             instance)
+
+Three layers:
+  Layer 3 (why):  Pattern recognition + satisficing (Tesseract)
+  Layer 2 (how):  Probe/mission + convergence + C1-C11 (Lazarus)
+  Layer 1 (what): Domain-specific coordinate system (Parallax, etc.)
+
+Layer 1 is domain-dependent. Layers 2 and 3 are domain-agnostic.
+Completing Tesseract + Lazarus reduces new domain entry cost
+from "design entire coordinate system" to "bridge mapping + Tier 4 residuals".
+
+Dependency direction (one-way only):
+  Domain project → Lazarus (import). Lazarus → domain (NEVER).
+  Domain project → Tesseract (bridge). Tesseract → domain (NEVER).
+```
+
+### Downstream Projects
+
+```
+Install: pip install -e ~/Documents/Lazarus
+
+| Project          | Path                          | Integration     |
+|------------------|-------------------------------|-----------------|
+| Parallax         | ~/Documents/Parallax/         | deep (import)   |
+| Spotlight Works  | .../Test_Cases/Spotlight_Works | medium (import) |
+| AI MVP 5th       | .../Test_Cases/3_AI_MVP_5th   | deep (Registry) |
+| Bootcamp         | .../Test_Cases/260205 Bootcamp| submodule → pip |
+| DT_Cartography   | .../DT IDEO/DT_Cartography    | independent     |
+| DT_Genome        | .../DT IDEO/DT_Genome         | independent     |
+| Tesseract        | ~/Documents/Tesseract/        | spec-only       |
+```
 
 ---
 
@@ -341,6 +380,31 @@ Before context limit:
 2. Save restore pointers to MEMORY.md.
 3. Commit all uncommitted work.
 4. Record the path to conclusions, not just conclusions.
+
+### Decision Commit Protocol
+
+```
+When a hypothesis is adopted or rejected during exploration,
+commit the decision as coordinates, not prose.
+
+  Adopted → logbook + experiment + memory (structured record)
+  Rejected → exploration_map (coordinate-based)
+
+exploration_map schema:
+  (facet, value, status, evidence_type, t)
+  status: adopted | rejected | open
+  evidence_type: observed | computed | estimated
+
+  Adopted decisions → O(1) lookup for future sessions (RPD pattern matching)
+  Rejected paths → prevent re-exploration of dead ends
+
+% safety net (supplementary, not primary):
+  70% context usage → [WARNING] save checkpoint
+  80% context usage → [STOP] mandatory save + clear
+
+Primary mechanism = logical decision commit (like git commit).
+% thresholds = safety net only.
+```
 
 ### Worktree isolation
 

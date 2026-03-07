@@ -2,13 +2,23 @@
 
 Meta-research library for probe-based exploration of unknown coordinate spaces.
 
+## Cosmology
+
+```
+Tesseract (discovery) → Lazarus (collection) → Parallax (triangulation)
+```
+
+- **Tesseract**: domain-agnostic discovery framework (RPD + Satisficing)
+- **Lazarus**: domain-agnostic collection protocol (C1-C11, probe/mission, convergence)
+- **Parallax**: domain-specific instance (EFL coordinate system)
+
 ## Install
 
 ```bash
 pip install -e .
 ```
 
-Zero dependencies — stdlib only, Python >= 3.11.
+Zero dependencies -- stdlib only, Python >= 3.11.
 
 ## Quick Start
 
