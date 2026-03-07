@@ -34,8 +34,6 @@ data = cc.init_axis_data("facet.name", ["high", "medium", "low"])
 cc.add_run(data, "claude_h1", "claude", 1, {"entity1": "high", "entity2": "low"})
 analysis = cc.analyze_axis(data)
 
-# Numeric convergence
-nc = registry.build_numeric_convergence()
 ```
 
 ## Bootstrap a New Domain
@@ -65,7 +63,6 @@ Replace `${DOMAIN_NAME}`, `${domain_name}`, etc. with your project values.
 | `lazarus.audit.schema_auditor` | Auditor 1: enum schema integrity |
 | `lazarus.audit.boundary_auditor` | Auditor 2: calculator boundary enforcement |
 | `lazarus.convergence.categorical` | Categorical (enum) convergence engine |
-| `lazarus.convergence.numeric` | Numeric (0-100) convergence engine |
 | `lazarus.convergence.display` | CLI display functions |
 | `lazarus.convergence.types` | Result dataclasses |
 | `lazarus.registry.domain` | DomainRegistry central config |

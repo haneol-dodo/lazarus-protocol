@@ -12,7 +12,6 @@ from ..audit.schema_auditor import SchemaIntegrityAuditor
 from ..audit.boundary_auditor import CalculatorBoundaryAuditor
 from ..audit.logbook_auditor import LogbookExperimentAuditor
 from ..convergence.categorical import CategoricalConvergence
-from ..convergence.numeric import NumericConvergence
 
 
 class DomainRegistry:
@@ -40,10 +39,6 @@ class DomainRegistry:
         pilot_viable_threshold: float = 0.40,
         runs_per_round: int = 6,
         max_rounds: int = 3,
-        # Numeric convergence defaults
-        numeric_threshold: float = 3.0,
-        numeric_min_stable: int = 2,
-        numeric_max_rounds: int = 7,
         # Audit convergence thresholds
         min_convergence_runs: int = 18,
         min_convergence_families: int = 2,
@@ -75,10 +70,6 @@ class DomainRegistry:
         self.pilot_viable_threshold = pilot_viable_threshold
         self.runs_per_round = runs_per_round
         self.max_rounds = max_rounds
-        self.numeric_threshold = numeric_threshold
-        self.numeric_min_stable = numeric_min_stable
-        self.numeric_max_rounds = numeric_max_rounds
-
         # Audit convergence thresholds
         self.min_convergence_runs = min_convergence_runs
         self.min_convergence_families = min_convergence_families
@@ -134,15 +125,6 @@ class DomainRegistry:
             families=self.families,
             runs_per_round=self.runs_per_round,
             max_rounds=self.max_rounds,
-        )
-
-    def build_numeric_convergence(self) -> NumericConvergence:
-        """Build a numeric convergence engine for this domain."""
-        return NumericConvergence(
-            threshold=self.numeric_threshold,
-            min_stable=self.numeric_min_stable,
-            max_rounds=self.numeric_max_rounds,
-            models=self.models,
         )
 
     def audit_staged(self) -> AuditReport:

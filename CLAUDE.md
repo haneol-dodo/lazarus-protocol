@@ -276,21 +276,6 @@ For categorical (enum) axes, convergence uses mode stability:
   C7 still applies -- these are NOT ground truth.
 ```
 
-### Numeric Convergence (continuous scales)
-
-```
-For numeric (0-100) axes, convergence uses delta stability:
-
-  Convergence criteria (per entity):
-    |running_mean(round N) - running_mean(round N-1)| < threshold
-    AND this holds for min_stable consecutive rounds.
-
-  Default: threshold = 3.0, min_stable = 2, max_rounds = 7.
-  Each round = len(models) runs (default: 3 models).
-
-  Vanishing point sequence: 3, 6, 9, 12, 15, 18, 21 runs.
-```
-
 ### Replication
 
 ```
@@ -441,7 +426,6 @@ Core modules:
   lazarus.experiment.core         -- ExperimentState, Experiment, transition
   lazarus.experiment.tracker      -- find_experiments, detect_experiment_branch
   lazarus.convergence.categorical -- CategoricalConvergence
-  lazarus.convergence.numeric     -- NumericConvergence
   lazarus.convergence.display     -- Print functions for analysis results
   lazarus.convergence.types       -- Result dataclasses
   lazarus.registry.domain         -- DomainRegistry (central config)

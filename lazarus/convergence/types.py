@@ -22,22 +22,6 @@ class WordConvergenceResult:
 
 
 @dataclass
-class NumericWordResult:
-    """Convergence state for a single word on a numeric axis."""
-
-    word: str
-    round_means: dict[int, float] = field(default_factory=dict)
-    round_deltas: dict[int, float] = field(default_factory=dict)
-    cumulative_stats: dict[int, dict] = field(default_factory=dict)
-    converged_at: int | None = None
-    convergence_speed: int | None = None
-    current_mean: float | None = None
-    current_sd: float | None = None
-    total_runs: int = 0
-    level: str | None = None
-
-
-@dataclass
 class AxisAnalysis:
     """Full convergence analysis for a categorical axis."""
 
