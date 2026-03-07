@@ -26,6 +26,7 @@
 | 3 | AI MVP 5th | lazarus import (깊음) | 낮음 -- DomainRegistry 이미 있음 |
 | 4 | DT_Cartography | 독립구현 | 높음 -- KK 0-100 categorical 전환, import 전환 |
 | 5 | DT_Genome | 독립구현 | 중간 -- 스키마 호환성 확인 후 import 전환 |
+| 7 | Tesseract | GitHub repo (submodule) | - | 10 facet + T1-T4 | RPD+Satisficing 핵심 |
 | 6 | 260205 Bootcamp | submodule | 낮음 -- pip -e 전환 |
 
 ## 가설
@@ -34,6 +35,8 @@
 - H2: exploration_map은 프로젝트 횡단으로 운영 가능하다
 - H3: Workspace Complexity는 exploration_map의 부산물이다 (별도 모듈 불필요)
 - H4: DT_Cartography의 KK score는 enum 구간으로 전환 가능하다
+- H5: Tesseract의 10 facet은 기존 20 facet과 직교(orthogonal)하다
+- H6: Tesseract(discovery) -> Lazarus(collection) -> Parallax(triangulation) cosmology가 통일장의 파이프라인이다
 
 ## 제약조건 (C9 사전 검토)
 
@@ -49,3 +52,5 @@
 3. Decision Commit Protocol CLAUDE.md 반영 -- Section 9 교체
 4. Spotlight Works convergence 연결 -- 실전 검증
 5. DT_Cartography categorical 전환 -- 가장 큰 작업
+6. Tesseract 10 facet과 기존 20 facet 관계 조사
+7. 파일 시스템 정리 -- 중복 제거 + ~/Projects/ 분리 + iCloud 정리

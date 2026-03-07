@@ -103,6 +103,57 @@
 - DT_Genome의 761 atom이 exploration_map의 seed가 될 수 있나?
 - Workspace Complexity를 별도 모듈로 둘지, exploration_map의 부산물로 볼지
 
+## Tesseract 발견 (추가)
+
+- GitHub: haneol-dodo/tesseract (v0.1.0, spec-only)
+- Bootcamp submodule로 등록되어 있었으나 로컬에서 init 안 됨 -- 복구 완료
+- **핵심**: RPD + Satisficing이 Tesseract의 중심 원리
+  - "Expert decision-making is recognition-primed + satisficing, not analytical optimization"
+- **Cosmology**: Tesseract(discovery) -> Lazarus(collection) -> Parallax(triangulation)
+- 10 observation facets, 28 theories with provenance, 6-Module training loop
+- 제약조건 T1-T4 (domain-agnostic, facet immutable, theory provenance, module abstract)
+- Lazarus C1-C11 상속
+- 통일장에 포함 대상 -- 10 facet과 기존 20 facet의 관계 조사 필요
+
+## 파일 정리 계획 (추가)
+
+### 현황
+- 총 68G (Documents 56G + Projects 12G)
+- Boilerplate 5개 모듈이 3-4곳에 중복 (15+ 복사본)
+- 2. English는 02-07 일괄 스냅샷 -- 이후 수정 없음
+- Bootcamp 2곳 존재 (AI IDE 03-07 활발 / DT IDEO 02-27 방치)
+- facet_schema가 JSON/MD 혼재, 3+ 곳에 산재
+- iCloud 동기화가 .git, .venv, .omc를 불필요하게 동기화 중
+
+### 안전하게 정리 가능
+- 2. English 내 Boilerplate 사본들 (02-07 스냅샷, 이후 미수정)
+- AI IDE/00. Boilerplate (MVP에 더 최신 버전 있음)
+- Bootcamp (DT IDEO) -- AI IDE 쪽이 활발
+- DT_Cartography, DT_Genome -- 완성 후 방치, 이동만
+
+### 주의 필요
+- Spotlight Works (03-08 활발)
+- 3_AI_MVP_5th (양쪽 활발, submodule 관계 정리)
+- MVP/AI_SaaS_Agent_Config (기술스택 분기)
+
+### 목표 구조
+```
+~/Projects/              로컬 전용 (코드 + git)
+  Lazarus, Parallax, Spotlight_Works, DT_Cartography,
+  DT_Genome, 3_AI_MVP_5th, Bootcamp, Tesseract
+
+~/Documents/             iCloud (문서만)
+  1. Work/ (강의자료, 계약서, PDF)
+  2. Resources/ (디자인, 폰트)
+```
+
+### 실행 순서
+1. git remote 전수 확인 (모든 프로젝트 push 상태 점검)
+2. 안전한 사본 삭제 (2. English 스냅샷, AI IDE Boilerplate)
+3. 코드 프로젝트 ~/Projects/로 이동
+4. iCloud에서 ~/Projects/ 제외 설정
+5. 깨진 참조 (하드코딩 절대경로) 수정
+
 ## 관련 파일
 - CLAUDE.md (수정됨 -- Section 8 numeric 제거)
 - lazarus/registry/domain.py (수정됨 -- numeric 참조 제거)
