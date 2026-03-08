@@ -1,6 +1,6 @@
 # EXP-HMK-001: 병원마케팅 강사 자료 프로브 -- Tesseract-C/L/K 도출
 
-> **Status**: draft
+> **Status**: in_progress (P1-P4 done, P5-P6 pending)
 > **Created**: 2026-03-08
 > **Protocol**: Lazarus v3.1.0
 > **Upstream**: Tesseract (discovery layer)
@@ -315,12 +315,50 @@ Phase 3에서 L의 facet이 확정된 후, L→K bridge mapping 수행:
 
 ---
 
+## Probe Execution Log
+
+| Probe | Source | Records | Status | Date | Notes |
+|-------|--------|---------|--------|------|-------|
+| P1 | S4 시나리오 30선 | 30 | done | 2026-03-08 | 30/30 시나리오, C/L 양면 |
+| P2 | S6 영업 가이드 | 13 | done | 2026-03-08 | P1 교차검증 완료 |
+| P3 | S1 특강 녹취록 | 127 | done | 2026-03-08 | S7 슬라이드 교차참조, 5 parallel agents |
+| P4 | S3 레이저제모 리서치 | 124 | done | 2026-03-08 | 사용자-AI 대화, 5 parallel agents |
+| P5 | S2 업태분석 | - | pending | - | K의 시장 좌표 |
+| P6 | S5 AI 블로그 | - | pending | - | L의 도구 vs K의 도구 |
+| **합계** | | **294** | **4/6** | | |
+
+### 중간 발견 요약 (P1-P4)
+
+**Tesseract-C facet 후보** (position):
+1. resistance_type: status_quo / distrust / trauma / cost / risk / timing / external / internal / competition_fear / uncertainty / none
+2. awareness_level: unaware / problem_aware / cause_aware / solution_aware
+3. decision_stage: interest / recognition / conviction / urgency
+4. pain_point, prior_attempt, desired_state
+5. value_orientation: cost_driven / data_driven / relationship_driven / brand_driven
+
+**Tesseract-L facet 후보** (distance, 강사):
+1. pipeline_stage: 7단계
+2. response_strategy: 8+ 패턴
+3. stage_objective: 단계별 목표 한정
+4. commitment_unit: 점진적 확대
+5. conversion_rate
+6. market_phase: 5단계 (개척→황금→과열→붕괴전조→구조조정) [P4 신규]
+7. dead-end funnel 판별 [P4 신규]
+8. 4단계 성공 공식, 매출 공식, 맞춤전략 4변수 [P3 신규]
+
+**Tesseract-K**:
+- SURPLUS: DB 30곳, AI IDE+디자인 진단, Lazarus/Tesseract 좌표계
+- GAP: ⑥제안(실적0), ⑦계약(구조미설계)
+- P4 신규: 3단 서비스(진단/설계/운영), "구조 판단" 포지셔닝, 구조조정기 진입 타이밍
+
+---
+
 ## 복원 포인터
 
 - 실험 파일: `~/Documents/Lazarus/experiments/EXP-HMK-001-hospital-marketing-probe.md`
 - 소스 위치: `~/Documents/.../Spotlight_Works/docs/8. 병원마케팅/1. 기획/`
-- 프로브 산출물 저장: `~/Documents/Tesseract/probes/hmk/` (생성 예정)
-- 트리거: "HMK 프로브 시작" → P1(시나리오)부터 실행
+- 프로브 산출물: `~/Documents/Tesseract/probes/hmk/` (P1-P4 완료)
+- 트리거: "HMK 프로브 계속" → P5(업태분석)부터 실행
 - 관련 문서:
   - Tesseract spec: `~/Documents/Tesseract/spec/`
   - Tesseract T1 review: `~/Documents/Tesseract/docs/t1_hitl_review_results.md`
