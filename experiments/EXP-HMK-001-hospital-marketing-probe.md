@@ -1,6 +1,6 @@
 # EXP-HMK-001: 병원마케팅 강사 자료 프로브 -- Tesseract-C/L/K 도출
 
-> **Status**: in_progress (P1-P4 done, P5-P6 pending)
+> **Status**: phase3_complete (SYNTHESIZE done -- C:5 facets, L:6 facets, bridge map 확정, F01-F10 직교성 확인)
 > **Created**: 2026-03-08
 > **Protocol**: Lazarus v3.1.0
 > **Upstream**: Tesseract (discovery layer)
@@ -323,11 +323,11 @@ Phase 3에서 L의 facet이 확정된 후, L→K bridge mapping 수행:
 | P2 | S6 영업 가이드 | 13 | done | 2026-03-08 | P1 교차검증 완료 |
 | P3 | S1 특강 녹취록 | 127 | done | 2026-03-08 | S7 슬라이드 교차참조, 5 parallel agents |
 | P4 | S3 레이저제모 리서치 | 124 | done | 2026-03-08 | 사용자-AI 대화, 5 parallel agents |
-| P5 | S2 업태분석 | - | pending | - | K의 시장 좌표 |
-| P6 | S5 AI 블로그 | - | pending | - | L의 도구 vs K의 도구 |
-| **합계** | | **294** | **4/6** | | |
+| P5 | S2 업태분석 | 51 | done | 2026-03-08 | K 자체 산출물, 3 parallel agents |
+| P6 | S5 AI 블로그 전자책 | 39 | done | 2026-03-08 | lead magnet 퍼널, L도구 vs K도구, 3 parallel agents |
+| **합계** | | **384** | **6/6** | | |
 
-### 중간 발견 요약 (P1-P4)
+### 중간 발견 요약 (P1-P5)
 
 **Tesseract-C facet 후보** (position):
 1. resistance_type: status_quo / distrust / trauma / cost / risk / timing / external / internal / competition_fear / uncertainty / none
@@ -335,6 +335,8 @@ Phase 3에서 L의 facet이 확정된 후, L→K bridge mapping 수행:
 3. decision_stage: interest / recognition / conviction / urgency
 4. pain_point, prior_attempt, desired_state
 5. value_orientation: cost_driven / data_driven / relationship_driven / brand_driven
+6. [P5 확인] distrust가 시장 전체 수준에서 확인 ("마케팅 대행 불신")
+7. [P5 확인] "바쁘고 IT 모름→신뢰하면 맡김" = trust-based delegation 시장 구조
 
 **Tesseract-L facet 후보** (distance, 강사):
 1. pipeline_stage: 7단계
@@ -345,11 +347,29 @@ Phase 3에서 L의 facet이 확정된 후, L→K bridge mapping 수행:
 6. market_phase: 5단계 (개척→황금→과열→붕괴전조→구조조정) [P4 신규]
 7. dead-end funnel 판별 [P4 신규]
 8. 4단계 성공 공식, 매출 공식, 맞춤전략 4변수 [P3 신규]
+9. [P5 확인] L 전략이 경쟁사 20곳 중 다수에서 부분적으로 관찰됨 (가격별 레퍼런스, 환불 보장, 희소성 전술)
 
 **Tesseract-K**:
 - SURPLUS: DB 30곳, AI IDE+디자인 진단, Lazarus/Tesseract 좌표계
 - GAP: ⑥제안(실적0), ⑦계약(구조미설계)
 - P4 신규: 3단 서비스(진단/설계/운영), "구조 판단" 포지셔닝, 구조조정기 진입 타이밍
+- P5 신규: K의 전략적 프레임워크 4축
+  1. 가격 경쟁 회피: P2 격전지→P3 진입, commodity 배제
+  2. 단품→번들: "홈페이지"→"온라인 존재감 총괄 관리"
+  3. 시간축 시퀀스: 병원(즉시)→세무사(6개월)→변호사(12개월)
+  4. 포지셔닝: "마케터"→"구조 설계자"
+- P5 신규: 반복판매 공장 3축 (프로젝트 반복 / 리테이너 / 업종 확장)
+- P5 신규: 사업 정책 18개 (가격4+영업4+프로젝트4+품질3+성장3)
+- P5 신규: 영업 정책 #5-#8이 L 전략의 완전한 코드화 (능동 DM, 진단 리포트, 견적 분리, 30 시나리오)
+
+**P6 신규 발견 (S5 AI 블로그 전자책, 36 records)**:
+- CL 지배적(42%): lead magnet이므로 C(잠재 수강생) 심리 + L 전략 교차가 핵심
+- Lead magnet 퍼널 해부: 프롤로그(감정복원)→Ch1(수요논증)→Ch2(수익증명)→Ch3(방법론)→Ch4(실전시연)→Ch5(social proof)→에필로그(CTA)
+- L의 5단계 수익(5만~1500만) vs K의 3단 서비스(100만~1500만): 진입점 상이, 최상위 동일
+- L vs K 도구 철학: L="민주화"(4종 특화도구, 초보친화), K="전문화"(1종 범용도구, 구조판단)
+- "AI+판단력" 공식 3회차 독립 확인: P4(S3)→P5(S2)→P6(S5). AI=하드웨어, 인간=비즈니스역할
+- C awareness_level과 검색 키워드 매핑: 4범주 키워드 = awareness 4단계의 검색 행동
+- K의 ⑥⑦ gap 해소 실마리: L의 lead magnet 퍼널을 "무료진단→설계미팅→계약"으로 번역 가능
 
 ---
 
